@@ -5,6 +5,9 @@
  */
 package info.ssgupta.hackerrank.java.algorithm.advanced;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,8 +22,9 @@ public class XORKey {
 
   public static int MAX_NUM = 32768;
 
-  public static void main(String[] args) {
-    Scanner in = new Scanner(System.in);
+  public static void main(String[] args) throws FileNotFoundException {
+    FileInputStream fis = new FileInputStream(new File("/home/ssgupta/workspace/hackerrank/Xorkey/input09.txt"));
+    Scanner in = new Scanner(fis);
     int T = in.nextInt();
     for (int i = 0; i < T; i++) {
       int N = in.nextInt();
@@ -56,32 +60,49 @@ public class XORKey {
         int p = in.nextInt();
         int q = in.nextInt();
 
-        Set<Integer> resultSet = new HashSet<Integer>();
+        Set<Integer> containerSet = new HashSet<Integer>();
+        for (int k = p - 1; k < q; k++) {
+          containerSet.add(k);
+        }
         mask = MAX_NUM;
         int bitIndex = 15;
-        int binaryIndexNeeded = 0;
-        while (!resultSet.isEmpty()) {
-          if ((a & mask) == mask) {
-            binaryIndexNeeded = 0;
-          } else {
-            binaryIndexNeeded = 1;
-          }
-          for (int k = p - 1; k < q; k++) {
-            if(arrayStore[binaryIndexNeeded][bitIndex].contains(k)){
-              resultSet.add(k);
-            }
-          }
-          bitIndex--;
-          mask = mask >>> 1;
-        }
-        if(resultSet.size()==1){
-          int result = (int)resultSet.toArray()[0];
-          System.out.println(a^arrayNumbers[result]);
-        }else{
-          
-        }
+        int maxIndex = findMaxValue(arrayStore, a, containerSet, mask, bitIndex);
+        System.out.println(a^arrayNumbers[maxIndex]);
       }
     }
   }
 
+  private static int findMaxValue(List[][] arrayStore, int a, Set<Integer> containerSet, int mask, int bitIndex) {
+    if(mask==0){
+      if(containerSet.isEmpty()){
+        return 0;
+      }else{
+        return (int)containerSet.toArray()[0];
+      }
+    }
+    
+    if(containerSet.size()==1){
+      return (int)containerSet.toArray()[0];
+    }
+    
+    int binaryIndexNeeded;
+    if ((a & mask) == mask) {
+      binaryIndexNeeded = 0;
+    } else {
+      binaryIndexNeeded = 1;
+    }
+    Set<Integer> newContainerSet = new HashSet<Integer>();
+    for (Integer k : containerSet) {
+      if (arrayStore[binaryIndexNeeded][bitIndex]!=null && arrayStore[binaryIndexNeeded][bitIndex].contains(k)) {
+        newContainerSet.add(k);
+      }
+    }
+    mask = mask >>> 1;
+    bitIndex--;
+    if (newContainerSet.isEmpty()) {
+      return findMaxValue(arrayStore, a, containerSet, mask, bitIndex);
+    }else{
+      return findMaxValue(arrayStore, a, newContainerSet, mask, bitIndex);
+    }
+  }
 }

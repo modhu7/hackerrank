@@ -6,6 +6,8 @@
 package info.ssgupta.hackerrank.java.algorithm.advanced;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -16,100 +18,6 @@ import java.util.StringTokenizer;
  * @author ssgupta
  */
 /*
-0 --- 0 - 14
-1 --- 0 - 14
-3 --- 0 - 14
-7 --- 0 - 14
-15 --- 0 - 14
-31 --- 0 - 14
-63 --- 0 - 14
-127 --- 0 - 14
-255 --- 0 - 14
-511 --- 0 - 14
-1023 --- 0 - 14
-2047 --- 0 - 14
-4095 --- 0 - 14
-8191 --- 0 - 6
-8192 --- 7 - 14
-16383 --- 0 - 2
-16384 --- 3 - 6
-16385 --- 7 - 10
-16386 --- 11 - 14
-32767 --- 0 - 0
-32768 --- 1 - 2
-32769 --- 3 - 4
-32770 --- 5 - 6
-32771 --- 7 - 8
-32772 --- 9 - 10
-32773 --- 11 - 12
-32774 --- 13 - 14
-65536 --- 0 - 0
-65537 --- 1 - 1
-65538 --- 2 - 2
-65539 --- 3 - 3
-65540 --- 4 - 4
-65541 --- 5 - 5
-65542 --- 6 - 6
-65543 --- 7 - 7
-65544 --- 8 - 8
-65545 --- 9 - 9
-65546 --- 10 - 10
-65547 --- 11 - 11
-65548 --- 12 - 12
-65549 --- 13 - 13
-65550 --- 14 - 14
-
-
-///////////////////////////////
-
-
-0 --- 0 - 14
-1 --- 0 - 14
-3 --- 0 - 14
-7 --- 0 - 14
-15 --- 0 - 14
-31 --- 0 - 14
-63 --- 0 - 14
-127 --- 0 - 14
-255 --- 0 - 14
-511 --- 0 - 14
-1023 --- 0 - 14
-2047 --- 0 - 14
-4095 --- 0 - 14
-8191 --- 0 - 6
-8192 --- 7 - 14
-16383 --- 0 - 2
-16384 --- 3 - 6
-16385 --- 7 - 10
-16386 --- 11 - 14
-32767 --- 0 - 0
-32768 --- 1 - 2
-32769 --- 3 - 4
-32770 --- 5 - 6
-32771 --- 7 - 8
-32772 --- 9 - 10
-32773 --- 11 - 12
-32774 --- 13 - 14
-65536 --- 0 - 0
-65537 --- 1 - 1
-65538 --- 2 - 2
-65539 --- 3 - 3
-65540 --- 4 - 4
-65541 --- 5 - 5
-65542 --- 6 - 6
-65543 --- 7 - 7
-65544 --- 8 - 8
-65545 --- 9 - 9
-65546 --- 10 - 10
-65547 --- 11 - 11
-65548 --- 12 - 12
-65549 --- 13 - 13
-65550 --- 14 - 14
-
-
-////////
-
-
 0 --- 0 - 14
 1 --- 0 - 14
 3 --- 0 - 14
@@ -157,10 +65,10 @@ import java.util.StringTokenizer;
 65550 --- 12 - 12
 65552 --- 13 - 13
 65554 --- 14 - 14
-
 1
 15 1
-2 3 5 6 4 8 17 19 7 1 10 13 15 12 14
+2 3 5   6  4 8 17 19  7  1 10 13 15 12 14
+8 9 15 12 14 2 27 25 13 11  0  7  5  6  4
 
 */
 public class XorKeyShengmin {
@@ -240,10 +148,12 @@ public class XorKeyShengmin {
     }
 
     int query(int A, int start, int end) {
+      //System.out.println(nums[6] + " " +  nums[7] + " "  + nums[8]);
       return query(A, start, end, 0, MAX_NUM);
     }
 
     int query(int A, int start, int end, int index, int mask) {
+      //System.out.println("Query " + A + " start:" + start + " end:" + end + " index:" + index + " mask:" + mask );
       if (start == end) {
         return nums[start];
       }
@@ -302,7 +212,7 @@ public class XorKeyShengmin {
     sort(nums);
     
     BinaryTree tree = new BinaryTree(nums);
-    tree.print();
+    //tree.print();
 
     for (; Q > 0; Q--) {
       StringTokenizer st = new StringTokenizer(rd.readLine());
@@ -328,11 +238,12 @@ public class XorKeyShengmin {
       StringTokenizer st = new StringTokenizer(rd.readLine());
       int N = Integer.parseInt(st.nextToken());
       int Q = Integer.parseInt(st.nextToken());
-      int[] nums = new int[N];
+      int[] nums = new int[N];      
 
       st = new StringTokenizer(rd.readLine());
       for (int i = 0; i < N; i++) {
         nums[i] = Integer.parseInt(st.nextToken());
+        //System.out.println(10^nums[i]);
       }
 
       solve(rd, Q, nums);
@@ -340,7 +251,8 @@ public class XorKeyShengmin {
   }
 
   public static void main(String[] args) throws Exception {
-    Reader rd = (args.length == 0) ? new InputStreamReader(System.in) : new FileReader(args[0]);
+    FileInputStream fis = new FileInputStream(new File("/home/ssgupta/workspace/hackerrank/Xorkey/input09.txt"));
+    Reader rd = (args.length == 0) ? new InputStreamReader(fis) : new FileReader(args[0]);
     new XorKeyShengmin().run(new BufferedReader(rd));
   }
 
